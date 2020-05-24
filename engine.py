@@ -45,15 +45,12 @@ def write_page(target_dict):
             page_counter += 1
             basic_dict(target_dict, page_counter)
             loop_pages(line, target_dict, page_counter)
-        elif line == 'Options':
-            loop_pages(line, target_dict, page_counter)
-        elif line == '\n':
-            line.replace("\n", "")
         elif line != 'Options' and re.search("([A-z]+\W*,\s*\d)", line) != None:
             loop_pages(line, target_dict, page_counter)
         else:
             loop_pages(line, target_dict, page_counter)
         replace_new_line(target_dict[page_counter]['Text'])
+        replace_tuple_num(target_dict)
     return target_dict
 
 def slow_type(string):
@@ -63,8 +60,6 @@ def slow_type(string):
         sys.stdout.flush()
         time.sleep(random.random() * 10.0 / type_speed)
         print(end='')
-    print("")
-    time.sleep(1.5)
 
 def display_text_lines(text):
     for line in text:
@@ -87,16 +82,15 @@ def get_response(options):
         print('{}. {}'.format(index + 1, option[0]))
         valid_inputs = [str(num+1) for num in range(len(options))]
     option_index = int(get_valid_input(valid_inputs))
-    print(option_index)
+    return option_index
 
-#print(story[1]['Options'])
-#get_response(story[1]['Options'])
-"""def story_flow(story):
+def story_flow(story):
     curr_page = 1
     while curr_page != None:
         page = story.get(curr_page, None)
+
         if page == None:
-            curr_page = none
+            curr_page = None
             break
 
         display_text_lines(page['Text'])
@@ -105,4 +99,5 @@ def get_response(options):
             curr_page = None
             break
 
-        curr_page = get_response(page['Options'])"""
+        curr_page = get_response(page['Options'])
+        print(curr_page)
