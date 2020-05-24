@@ -5,10 +5,10 @@ story = {
     'Options': [("Yeah of course!", 2), ("I'm sorry I don't", 3), ("I'm busy right now", 3)]}
 }
 
-def basic_struct(target_hash, page_num):
-    target_hash.update({page_num: {'Text': [], 'Options': []}})
+def basic_dict(target_dict, page_num):
+    target_dict.update({page_num: {'Text': [], 'Options': []}})
     #print(target_hash)
-    return target_hash
+    return target_dict
 
 test = {}
 
@@ -16,28 +16,32 @@ def write_page():
     print("Starting on page 1. Enter input line-by-line")
 
     page_counter = 1
-    basic_struct(test, page_counter)
+    basic_dict(test, page_counter)
     line = input('')
 
-    while line != 'Options' and line != 'quit' and line != 'Next page':
-        test[page_counter]['Text'].append(line)
-        print(test[page_counter]['Text'])
-        line = input('')
+    if line == 'Next page':
+        page_counter += 1
+        #loop_pages(page_counter)
 
-    if line == 'Options':
-        while line != 'quit' and line != 'Next page':
+def loop_pages(user_input, dictionary, page_count):
+    while user_input != 'Options' and user_input != 'quit' and user_input != 'Next page':
+        test[page_counter]['Text'].append(user_input)
+        print(test[page_counter]['Text'])
+        user_input = input('')
+
+    if user_input == 'Options':
+        while user_input != 'quit' and user_input != 'Next page':
             option_text = input("Enter the text of the option: ")
             option_num = int(input("Enter the number of the page to jump to: "))
 
             test[page_counter]['Options'].append((option_text, option_num))
             print(test[page_counter]['Options'])
-            
-            if line == 'quit' or line == 'Next page':
-                break
-    elif line == 'Next page':
-        
 
-#write_page()
+            if user_input == 'quit' or user_input == 'Next page':
+                break
+
+
+write_page()
 
 def slow_type(string):
     type_speed = 50
