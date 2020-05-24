@@ -1,7 +1,5 @@
 import sys, time, random, re
 
-story = {}
-
 def basic_dict(target_dict, page_num):
     target_dict.update({page_num: {'Text': [], 'Options': []}})
     return target_dict
@@ -58,10 +56,6 @@ def write_page(target_dict):
         replace_new_line(target_dict[page_counter]['Text'])
     return target_dict
 
-write_page(story)
-replace_tuple_num(story)
-print(story)
-
 def slow_type(string):
     type_speed = 50
     for letter in string:
@@ -69,6 +63,8 @@ def slow_type(string):
         sys.stdout.flush()
         time.sleep(random.random() * 10.0 / type_speed)
         print(end='')
+    print("")
+    time.sleep(1.5)
 
 def display_text_lines(text):
     for line in text:
@@ -92,7 +88,6 @@ def get_response(options):
         valid_inputs = [str(num+1) for num in range(len(options))]
     option_index = int(get_valid_input(valid_inputs))
     print(option_index)
-        #print(options[option_index][1])
 
 #print(story[1]['Options'])
 #get_response(story[1]['Options'])
