@@ -7,65 +7,28 @@ story = {
 
 def basic_dict(target_dict, page_num):
     target_dict.update({page_num: {'Text': [], 'Options': []}})
-    #print(target_hash)
     return target_dict
 
 f = open("story.txt", "r")
 
-#Do text, options, and page appending separately
+def replace_tuple_num(dictionary):
+    counter = 0
+    for item in dictionary[1]['Options']:
+        int_temp = int(dictionary[1]['Options'][counter][1])
+        new_tuple = dictionary[1]['Options'][counter][0], int_temp
+        dictionary[1]['Options'][counter] = new_tuple
+        counter += 1
+    return dictionary
 
 def loop_pages(user_input, input_dict, page_count):
 
     if user_input != 'Options\n' and user_input != 'Page {}\n'.format(page_count) and user_input != '\n' and re.search("([A-z]+\W*,\s*\d)", user_input) == None:
         input_dict[page_count]['Text'].append(user_input)
-        #print(input_dict[page_count]['Text'])
 
     if user_input == 'Options':
         print("Found an options header")
     elif user_input != 'Options' and re.search("([A-z]+\W*,\s*\d)", user_input) != None:
         input_dict[page_count]['Options'].append((tuple(user_input.replace('\n', '').split(","))))
-        """#while user_input != 'Page {}'.format(page_count + 1):
-            #if user_input == 'Page {}'.format(page_count + 1):
-                #break
-
-        option_text = user_input
-        try:
-            option_num = int(user_input)
-        except:
-            return False
-
-        input_dict[page_count]['Options'].append((user_input, option_num))
-        print(input_dict[page_count]['Options'])
-
-    elif user_input == 'Page {}'.format(page_count + 1):
-        print('Hello from page {}'.format(page_count + 1))
-        return True"""
-    """while user_input != 'o' and user_input != 'quit' and user_input != 'Next':
-        input_dict[page_count]['Text'].append(user_input)
-        print(input_dict[page_count]['Text'])
-        user_input = input('')
-
-    if user_input == 'o':
-        #user_input = input('Moving to options settings...')
-        while user_input != 'quit' and user_input != 'Next':
-
-            if user_input == 'Next':
-                break
-
-            user_input = input("Enter the text of the option: ")
-
-            try:
-                option_num = int(input("Enter the number of the page to jump to: "))
-            except:
-                #print(user_input)
-                break
-
-            input_dict[page_count]['Options'].append((user_input, option_num))
-            print(input_dict[page_count]['Options'])
-
-    if user_input == 'quit' or user_input == 'Next':
-            print("hello")"""
-
 
 test = {}
 
@@ -86,7 +49,11 @@ def write_page():
             loop_pages(line, test, page_counter)
         else:
             loop_pages(line, test, page_counter)
+
+    return test
+
 write_page()
+replace_tuple_num(test)
 print(test)
 
 def slow_type(string):
