@@ -11,6 +11,19 @@ def basic_dict(target_dict, page_num):
 
 f = open("story.txt", "r")
 
+def replace_new_line(dictionary):
+    counter = 0
+    for item in dictionary:
+        z = re.search("\n", item)
+        if z != None:
+            z = re.sub("\n", "", item)
+            item = z
+            dictionary[counter] = item
+        counter += 1
+    return dictionary
+
+test_array = ['Hello there..\n', 'I bet you werent exepecting to hear from me so soon...\n', '...you seem a little confused do you know who I am?\n']
+
 def replace_tuple_num(dictionary):
     counter = 0
     for item in dictionary[1]['Options']:
@@ -50,11 +63,12 @@ def write_page():
         else:
             loop_pages(line, test, page_counter)
 
+    #replace_new_line(test[page_counter]['Text'])
     return test
 
 write_page()
 replace_tuple_num(test)
-print(test)
+#print(test)
 
 def slow_type(string):
     type_speed = 50
