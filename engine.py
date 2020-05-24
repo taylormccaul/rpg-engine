@@ -1,9 +1,6 @@
 import sys, time, random, re
 
-story = {
-  1: {'Text': [ "Hello there..", "I bet you werent exepecting to hear from me so soon...", "...you seem a little confused do you know who I am?"],
-    'Options': [("Yeah of course!", 2), ("I'm sorry I don't", 3), ("I'm busy right now", 3)]}
-}
+story = {}
 
 def basic_dict(target_dict, page_num):
     target_dict.update({page_num: {'Text': [], 'Options': []}})
@@ -11,30 +8,27 @@ def basic_dict(target_dict, page_num):
 
 f = open("story.txt", "r")
 
-def replace_new_line(dictionary):
+def replace_new_line(target_dict):
     counter = 0
-    for item in dictionary:
+    for item in target_dict:
         z = re.search("\n", item)
         if z != None:
             z = re.sub("\n", "", item)
             item = z
-            dictionary[counter] = item
+            target_dict[counter] = item
         counter += 1
-    return dictionary
+    return target_dict
 
-test_array = ['Hello there..\n', 'I bet you werent exepecting to hear from me so soon...\n', '...you seem a little confused do you know who I am?\n']
-
-def replace_tuple_num(dictionary):
+def replace_tuple_num(target_dict):
     counter = 0
-    for item in dictionary[1]['Options']:
-        int_temp = int(dictionary[1]['Options'][counter][1])
-        new_tuple = dictionary[1]['Options'][counter][0], int_temp
-        dictionary[1]['Options'][counter] = new_tuple
+    for item in target_dict[1]['Options']:
+        int_temp = int(target_dict[1]['Options'][counter][1])
+        new_tuple = target_dict[1]['Options'][counter][0], int_temp
+        target_dict[1]['Options'][counter] = new_tuple
         counter += 1
-    return dictionary
+    return target_dict
 
 def loop_pages(user_input, input_dict, page_count):
-
     if user_input != 'Options\n' and user_input != 'Page {}\n'.format(page_count) and user_input != '\n' and re.search("([A-z]+\W*,\s*\d)", user_input) == None:
         input_dict[page_count]['Text'].append(user_input)
 
@@ -43,32 +37,30 @@ def loop_pages(user_input, input_dict, page_count):
     elif user_input != 'Options' and re.search("([A-z]+\W*,\s*\d)", user_input) != None:
         input_dict[page_count]['Options'].append((tuple(user_input.replace('\n', '').split(","))))
 
-test = {}
-
-def write_page():
+def write_page(target_dict):
     page_counter = 1
-    basic_dict(test, page_counter)
+    basic_dict(target_dict, page_counter)
 
     for line in f:
         if line == 'Page {}\n'.format(page_counter + 1):
+            replace_new_line(target_dict[page_counter]['Text'])
             page_counter += 1
-            basic_dict(test, page_counter)
-            loop_pages(line, test, page_counter)
+            basic_dict(target_dict, page_counter)
+            loop_pages(line, target_dict, page_counter)
         elif line == 'Options':
-            loop_pages(line, test, page_counter)
+            loop_pages(line, target_dict, page_counter)
         elif line == '\n':
             line.replace("\n", "")
         elif line != 'Options' and re.search("([A-z]+\W*,\s*\d)", line) != None:
-            loop_pages(line, test, page_counter)
+            loop_pages(line, target_dict, page_counter)
         else:
-            loop_pages(line, test, page_counter)
+            loop_pages(line, target_dict, page_counter)
+        replace_new_line(target_dict[page_counter]['Text'])
+    return target_dict
 
-    #replace_new_line(test[page_counter]['Text'])
-    return test
-
-write_page()
-replace_tuple_num(test)
-#print(test)
+write_page(story)
+replace_tuple_num(story)
+print(story)
 
 def slow_type(string):
     type_speed = 50
